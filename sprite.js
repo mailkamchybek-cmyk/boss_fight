@@ -15,12 +15,8 @@ function initPlayerAnimation(unit) {
   unit.isWalking = false;
 }
 function animatePlayer(unit, keys, dt) {
-  const left = keys.has('a') || keys.has('arrowleft');
-  const right = keys.has('d') || keys.has('arrowright');
-  const up = keys.has('w') || keys.has('arrowup');
-  const down = keys.has('s') || keys.has('arrowdown');
-  const dx = Number(right) - Number(left);
-  const dy = Number(down) - Number(up);
+  const dx = unit.moveX || 0;
+  const dy = unit.moveY || 0;
   unit.isWalking = dx !== 0 || dy !== 0;
   if (!unit.isWalking) { unit.walkTime = 0; return; }
   // Негизги огуна жараша караган багыты

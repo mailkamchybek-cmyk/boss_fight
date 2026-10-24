@@ -2,6 +2,18 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const keys = new Set();
+let mouseFollowing = false;
+let mousePosition = null;
+function setMouseTarget() {
+  if (!mousePosition || over || gameOverDelay > 0) return;
+  const rect = canvas.getBoundingClientRect();
+  const viewX = (mousePosition.x - rect.left - canvas.clientLeft) * canvas.width / canvas.clientWidth;
+  const viewY = (mousePosition.y - rect.top - canvas.clientTop) * canvas.height / canvas.clientHeight;
+  player.moveTarget = {
+    x: Math.max(0, Math.min(MAP.width - player.size, viewX + camera.x - player.size / 2)),
+    y: Math.max(0, Math.min(MAP.height - player.size, viewY + camera.y - player.size / 2))
+  };
+}
 const gameOverWindow = document.getElementById('gameOverWindow');
 const gameOverTitle = document.getElementById('gameOverTitle');
 const restartButton = document.getElementById('restartButton');
@@ -12,6 +24,7 @@ function makeUnit(position, hp) {
   return { ...position, size: SIZE, maxHp: hp, hp, cooldown: 0, flash: 0, displayHp: hp, hitBase: hp, hitSum: 0, hitTimer: 0 };
 }
 function reset() {
+  mouseFollowing = false; mousePosition = null;
   player = makeUnit(cellPosition(MAP.playerSpawn.col, MAP.playerSpawn.row), 100);
   initPlayerAnimation(player);
   mobs = MAP.mobSpawns.map(p => makeUnit(cellPosition(p.col, p.row), 30));
@@ -43,6 +56,7 @@ function update(dt) {
   }
   if (over || gameOverDelay > 0) return;
   player.cooldown = Math.max(0, player.cooldown - dt);
+  if (mouseFollowing) setMouseTarget();
   movePlayer(player, keys, dt);
   animatePlayer(player, keys, dt);
   if (keys.has(' ')) attack();
@@ -73,6 +87,10 @@ function draw() {
   camera.y = Math.max(0, Math.min(MAP.height - camera.height, player.y + SIZE/2 - camera.height/2));
   ctx.save(); ctx.translate(-camera.x, -camera.y);
   drawMap(ctx, camera);
+  if (player.moveTarget) {
+    ctx.strokeStyle = '#28a745'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(player.moveTarget.x + SIZE/2, player.moveTarget.y + SIZE/2, 9, 0, Math.PI*2); ctx.stroke();
+  }
   for (const mob of mobs) if (mob.hp > 0) drawUnit(mob, '#ed3434', 'М');
   if (!drawPlayerSprite(ctx, player)) drawUnit(player, '#1677ff', 'П');
   else drawHealth(player, 'П');
@@ -96,6 +114,21 @@ window.addEventListener('keydown', e => {
   keys.add(key); if (key === 'r') reset();
 });
 window.addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
-window.addEventListener('blur', () => keys.clear());
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+canvas.addEventListener('pointerdown', e => {
+  if (e.button !== 2 || over || gameOverDelay > 0) return;
+  e.preventDefault(); mouseFollowing = true;
+  mousePosition = { x: e.clientX, y: e.clientY };
+  canvas.setPointerCapture(e.pointerId); setMouseTarget();
+});
+canvas.addEventListener('pointermove', e => {
+  if (mouseFollowing) mousePosition = { x: e.clientX, y: e.clientY };
+});
+window.addEventListener('pointerup', e => {
+  if (e.button === 2) { if (mouseFollowing) { mousePosition = { x:e.clientX, y:e.clientY }; setMouseTarget(); } mouseFollowing = false; }
+});
+canvas.addEventListener('pointercancel', () => { mouseFollowing = false; player.moveTarget = null; });
+canvas.addEventListener('lostpointercapture', () => { mouseFollowing = false; });
+window.addEventListener('blur', () => { keys.clear(); mouseFollowing = false; player.moveTarget = null; });
 restartButton.addEventListener('click', reset);
 reset(); requestAnimationFrame(frame);
