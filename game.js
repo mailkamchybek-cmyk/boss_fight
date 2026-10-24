@@ -59,7 +59,7 @@ function update(dt) {
   if (mouseFollowing) setMouseTarget();
   movePlayer(player, keys, dt);
   animatePlayer(player, keys, dt);
-  if (keys.has(' ')) attack();
+  attack(); // Жакын келген мобго автоматтык чабуул.
   for (const mob of mobs) {
     if (mob.hp <= 0) continue;
     mob.cooldown = Math.max(0, mob.cooldown - dt);
