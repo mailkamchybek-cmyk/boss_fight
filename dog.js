@@ -2,6 +2,8 @@
 const DOG_SKILL = { speed: 400, range: 600, cooldown: 1.5, frames: 5, fps: 12 };
 const dogSprite = new Image();
 dogSprite.src = 'dog-sprite.png';
+const dogUpSprite = new Image();
+dogUpSprite.src = 'dog-up-sprite.png';
 let runningDogs = [];
 let dogCooldown = 0;
 function resetDogs() { runningDogs = []; dogCooldown = 0; }
@@ -26,18 +28,25 @@ function updateDogs(dt) {
   runningDogs = runningDogs.filter(d => d.distance < DOG_SKILL.range && d.x >= 0 && d.x <= MAP.width && d.y >= 0 && d.y <= MAP.height);
 }
 function drawDogs(ctx) {
-  if (!dogSprite.complete || !dogSprite.naturalWidth) return;
-  const fw = dogSprite.naturalWidth / DOG_SKILL.frames;
-  const sy = dogSprite.naturalHeight * 0.30;
-  const sh = dogSprite.naturalHeight * 0.42;
   for (const dog of runningDogs) {
-    const frame = Math.floor(dog.age * DOG_SKILL.fps) % DOG_SKILL.frames;
+    const upwards = dog.dy < 0;
+    const image = upwards ? dogUpSprite : dogSprite;
+    if (!image.complete || !image.naturalWidth) continue;
+    const frames = upwards ? 6 : DOG_SKILL.frames;
+    const fw = image.naturalWidth / frames;
+    const sy = image.naturalHeight * (upwards ? 0.12 : 0.30);
+    const sh = image.naturalHeight * (upwards ? 0.76 : 0.42);
+    const frame = Math.floor(dog.age * DOG_SKILL.fps) % frames;
+    const height = upwards ? 70 : 49;
+    const width = upwards ? height * fw / sh : 70;
     ctx.save(); ctx.translate(dog.x, dog.y);
-    if (dog.dx < 0) ctx.scale(-1, 1);
-    else if (dog.dy) ctx.rotate(dog.dy > 0 ? Math.PI/2 : -Math.PI/2);
-    // Ак фон картага аралашат, кара иттин силуэти гана көрүнөт.
+    if (!upwards) {
+      if (dog.dx < 0) ctx.scale(-1, 1);
+      else if (dog.dy > 0) ctx.rotate(Math.PI / 2);
+    }
+    // Өйдө багыт үчүн өзүнчө 6 кадрлуу сүрөт колдонулат.
     ctx.globalCompositeOperation = 'multiply';
-    ctx.drawImage(dogSprite, frame * fw, sy, fw, sh, -35, -24.5, 70, 49);
+    ctx.drawImage(image, frame * fw, sy, fw, sh, -width/2, -height/2, width, height);
     ctx.restore();
   }
 }
