@@ -27,6 +27,7 @@ function makeUnit(position, hp) {
   return { ...position, size: SIZE, maxHp: hp, hp, cooldown: 0, flash: 0, displayHp: hp, hitBase: hp, hitSum: 0, hitTimer: 0 };
 }
 function reset() {
+  resetDogs();
   if (typeof closeShop === 'function') closeShop();
   mouseFollowing = false; mousePosition = null;
   player = makeUnit(cellPosition(MAP.playerSpawn.col, MAP.playerSpawn.row), 100);
@@ -72,6 +73,7 @@ function update(dt) {
   if (mouseFollowing) setMouseTarget();
   movePlayer(player, keys, dt);
   animatePlayer(player, keys, dt);
+  updateDogs(dt);
   attack(); // Жакын келген мобго автоматтык чабуул.
   for (const mob of mobs) {
     if (mob.hp <= 0) continue;
@@ -111,6 +113,7 @@ function draw() {
     ctx.strokeStyle = '#f3c84d'; ctx.lineWidth = 4;
     ctx.strokeRect(player.x-4, player.y-4, SIZE+8, SIZE+8);
   }
+  drawDogs(ctx);
   ctx.restore();
   if (typeof updateHud === 'function') updateHud();
 }
@@ -121,6 +124,7 @@ function frame(now) {
 window.addEventListener('keydown', e => {
   if (document.getElementById('shopDialog').open) return;
   const key = e.key.toLowerCase();
+  if ((e.code === 'KeyQ' || key === 'q') && !e.repeat) { e.preventDefault(); castDog(); }
   if ([' ', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) e.preventDefault();
   keys.add(key); if (key === 'r') reset();
 });

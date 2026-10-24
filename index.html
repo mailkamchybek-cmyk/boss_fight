@@ -39,9 +39,9 @@
         <div class="hud-stat-columns"><div><p>Чабуул <b id="heroDamage"></b></p><p>Коргонуу <b id="heroArmor"></b></p><p>Ылдамдык <b id="heroSpeed"></b></p></div><div><p class="str">Күч <b id="heroStrength"></b></p><p class="agi">Шамдагайлык <b id="heroAgility"></b></p><p class="int">Акыл <b id="heroIntelligence"></b></p></div></div><div id="heroStatus" class="hud-status"></div>
       </div>
       <div class="hud-items hud-frame"><h3>Буюмдар</h3><div class="hud-item-grid"><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span><span class="hud-slot" title="Бош буюм уячасы"><span>＋</span></span></div></div>
-      <div class="hud-skills hud-frame"><h3>Жөндөмдөр</h3><div class="hud-skill-grid"><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span></div><div class="hud-points">Упай: <b id="heroPoints">0</b></div></div>
+      <div class="hud-skills hud-frame"><h3>Жөндөмдөр</h3><div class="hud-skill-grid"><button id="dogSkillButton" class="hud-slot dog-skill" type="button" aria-label="Ит жиберүү (Q)" title="Ит жиберүү (Q): караган тарапка жүгүрөт"><span class="dog-skill-icon" aria-hidden="true"></span><b id="dogCooldown">Q</b></button><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span><span class="hud-slot" title="Жөндөм кийин кошулат"><span>＋</span></span></div><div class="hud-points">Упай: <b id="heroPoints">0</b></div></div>
     </section>
-    <p><strong>Чычкандын оң баскычы</strong> — барчу жерди тандоо (кармап жылдырсаңыз — ээрчүү) · <strong>WASD / жебелер</strong> — басуу · <strong>Автоатака</strong> — жакын турган мобду өзү урат · <strong>1</strong> — дүкөн · <strong>R</strong> — кайра баштоо</p>
+    <p><strong>Чычкандын оң баскычы</strong> — барчу жерди тандоо (кармап жылдырсаңыз — ээрчүү) · <strong>WASD / жебелер</strong> — басуу · <strong>Автоатака</strong> — жакын турган мобду өзү урат · <strong>Q</strong> — ит жиберүү · <strong>1</strong> — дүкөн · <strong>R</strong> — кайра баштоо</p>
   </main>
   <script src="map.js"></script>
   <script src="hp.js"></script>
@@ -51,6 +51,7 @@
   <script src="mob_attack.js"></script>
   <script src="sprite.js"></script>
   <script src="progression.js"></script>
+  <script src="dog.js"></script>
   <script src="game.js"></script>
   <script src="shop.js"></script>
   <script src="hud.js"></script>

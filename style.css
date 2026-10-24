@@ -79,3 +79,9 @@ main>h1,main>p { display:none; }
 .hud-stats h2 { font-size:14px; }.hud-stat-columns p { font-size:12px; }.hud-stat-columns b { font-size:14px; }.hud-status { font-size:11px; }
 @media(max-width:650px) { .hero-hud { flex-basis:155px;height:155px;grid-template-columns:1fr .7fr 1.7fr;gap:3px;padding:5px 3px; }.hud-items,.hud-skills { display:none; }.hud-stats h2 {font-size:11px;}.hud-stat-columns p {font-size:9px;}.hud-stat-columns b {font-size:11px;}.hud-status {font-size:9px;} }
 @media(max-height:450px) and (min-width:651px) { .hero-hud {flex-basis:125px;height:125px;padding-top:4px;}.hud-stat-columns p {font-size:9px;margin:1px 0;}.hud-stat-columns b {font-size:10px;}.hud-status {font-size:9px;margin-top:2px;}.hud-stats h2 {font-size:11px;margin-bottom:2px;} }
+
+.dog-skill { position:relative;padding:0;overflow:hidden;border-color:#d7b85e;background:#ddd6b5;cursor:pointer; }
+.dog-skill-icon { position:absolute;inset:0;background-image:url('dog-sprite.png');background-size:500% auto;background-position:0 50%;background-repeat:no-repeat; }
+.dog-skill b { position:absolute;left:2px;bottom:1px;min-width:19px;padding:1px 3px;border:1px solid #d7b85e;border-radius:3px;background:#131a16;color:#ffe49a;font-size:12px; }
+.dog-skill:hover { border-color:#fff0a5;filter:brightness(1.15); }.dog-skill:focus-visible { outline:2px solid #ffe49a;outline-offset:-3px; }.dog-skill:disabled { cursor:default;filter:grayscale(.7) brightness(.65); }
+@media(max-width:650px) { .hud-skills { display:flex;position:absolute;right:12px;bottom:170px;width:66px;height:70px;padding:3px;z-index:4; }.hud-skills h3,.hud-skills .hud-points,.hud-skills .hud-slot:not(.dog-skill) {display:none;}.hud-skills .hud-skill-grid {display:flex;}.hud-skills .dog-skill {width:100%;height:100%;} }

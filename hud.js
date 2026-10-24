@@ -1,6 +1,7 @@
 'use strict';
 const hud = Object.fromEntries(['heroName','heroHp','heroMana','hpFill','manaFill','xpFill','xpText','heroDamage','heroArmor','heroStrength','heroAgility','heroIntelligence','heroSpeed','heroPoints','heroStatus','minimap','heroPortrait'].map(id => [id, document.getElementById(id)]));
 function updateHud() {
+  updateDogButton();
   if (!hud.heroName || !player) return;
   const start = totalXpForLevel(player.level), next = totalXpForLevel(player.level + 1);
   hud.heroName.textContent = 'Каарман · Level ' + player.level;
