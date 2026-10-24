@@ -3,6 +3,7 @@
 const PLAYER_SPRITE = {
   src: 'player_sprite.png',
   directions: 4,
+  displayScale: 0.7, // Каармандын бийиктиги клетканын 70% түзөт
   framesPerDirection: 3,
   walkFramesPerSecond: 8, // Жүрүш анимациясынын ылдамдыгы
 };
@@ -35,7 +36,7 @@ function drawPlayerSprite(ctx, unit) {
   // Сүрөт 3 мамыча жана 4 катардан турат; кадрды чыныгы өлчөмүнөн эсептейбиз.
   const frameWidth = playerSpriteImage.naturalWidth / PLAYER_SPRITE.framesPerDirection;
   const frameHeight = playerSpriteImage.naturalHeight / PLAYER_SPRITE.directions;
-  const scale = unit.size / Math.max(frameWidth, frameHeight);
+  const scale = unit.size * PLAYER_SPRITE.displayScale / Math.max(frameWidth, frameHeight);
   const width = frameWidth * scale;
   const height = frameHeight * scale;
   const smoothing = ctx.imageSmoothingEnabled;
