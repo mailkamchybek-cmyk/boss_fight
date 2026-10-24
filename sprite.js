@@ -3,7 +3,7 @@
 const PLAYER_SPRITE = {
   src: 'player_sprite.png',
   directions: 4,
-  displayScale: 0.7, // Каармандын бийиктиги клетканын 70% түзөт
+  displayScale: 1, // Каармандын бийиктиги бир клеткага тең
   framesPerDirection: 3,
   walkFramesPerSecond: 8, // Жүрүш анимациясынын ылдамдыгы
 };
