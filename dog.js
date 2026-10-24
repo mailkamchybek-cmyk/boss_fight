@@ -29,22 +29,23 @@ function updateDogs(dt) {
 }
 function drawDogs(ctx) {
   for (const dog of runningDogs) {
-    const upwards = dog.dy < 0;
-    const image = upwards ? dogUpSprite : dogSprite;
+    const vertical = dog.dy !== 0;
+    const image = vertical ? dogUpSprite : dogSprite;
     if (!image.complete || !image.naturalWidth) continue;
-    const frames = upwards ? 6 : DOG_SKILL.frames;
+    const frames = vertical ? 6 : DOG_SKILL.frames;
     const fw = image.naturalWidth / frames;
-    const sy = image.naturalHeight * (upwards ? 0.12 : 0.30);
-    const sh = image.naturalHeight * (upwards ? 0.76 : 0.42);
+    const sy = image.naturalHeight * (vertical ? 0.12 : 0.30);
+    const sh = image.naturalHeight * (vertical ? 0.76 : 0.42);
     const frame = Math.floor(dog.age * DOG_SKILL.fps) % frames;
-    const height = upwards ? 70 : 49;
-    const width = upwards ? height * fw / sh : 70;
+    const height = vertical ? 70 : 49;
+    const width = vertical ? height * fw / sh : 70;
     ctx.save(); ctx.translate(dog.x, dog.y);
-    if (!upwards) {
+    if (vertical) {
+      if (dog.dy > 0) ctx.rotate(Math.PI);
+    } else {
       if (dog.dx < 0) ctx.scale(-1, 1);
-      else if (dog.dy > 0) ctx.rotate(Math.PI / 2);
     }
-    // Өйдө багыт үчүн өзүнчө 6 кадрлуу сүрөт колдонулат.
+    // Тик багыттарда 6 кадрлуу сүрөт: ылдый үчүн 180° бурулат.
     ctx.globalCompositeOperation = 'multiply';
     ctx.drawImage(image, frame * fw, sy, fw, sh, -width/2, -height/2, width, height);
     ctx.restore();
