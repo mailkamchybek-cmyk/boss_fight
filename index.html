@@ -9,7 +9,7 @@
 <body>
   <main>
     <h1>Boss Fight</h1>
-    <p>Сүрөттөгү пиксел каарман — персонаж (100 HP, 30 урон). Кызыл квадрат — моб (30 HP, 10 урон). Карта 50×50 клетка. Персонаж ылдыйкы оң жакта, 4 моб жогоруда пайда болот.</p>
+    <p>Сүрөттөгү пиксел каарман — персонаж (100 HP, 30 урон). Кызыл квадрат — моб (30 HP, 10 урон). Карта 50×50 клетка. Персонаж ылдыйкы оң жакта, 4 моб жогоруда пайда болот. Ар бир моб 25 EXP берет; баары өлгөндө жаңы толкун чыгат. Level көтөрүлгөндө атрибуттар өсөт.</p>
     <div class="game-box">
       <canvas id="game" width="600" height="500"></canvas>
       <div id="gameOverWindow" class="game-over-window" hidden>
@@ -28,6 +28,7 @@
   <script src="attack.js"></script>
   <script src="mob_attack.js"></script>
   <script src="sprite.js"></script>
+  <script src="progression.js"></script>
   <script src="game.js"></script>
 </body>
 </html>

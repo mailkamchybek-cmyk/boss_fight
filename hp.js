@@ -4,6 +4,8 @@
 
 function dealDamage(target, amount) {
   if (target.hp <= 0) return false;
+  // Armor азайткан физикалык урон: damage / (1 + 0.06 * armor).
+  amount /= 1 + 0.06 * Math.max(0, target.armor || 0);
   const actualDamage = Math.min(Math.max(0, amount), target.hp);
   if (!actualDamage) return false;
   if (target.hitTimer <= 0) {
@@ -30,7 +32,7 @@ function updateHp(unit, dt) {
 function drawHealth(unit, label) {
   const x = unit.x, y = unit.y;
   const inCombat = unit.hitTimer > 0 && unit.hitSum > 0;
-  const hpText = inCombat ? `${unit.hitBase}−${unit.hitSum}` : `${unit.hp}`;
+  const hpText = inCombat ? `${Math.ceil(unit.hitBase)}−${Math.ceil(unit.hitSum)}` : `${Math.ceil(unit.hp)}`;
   const fullText = `${label} ${hpText} хп`;
 
   ctx.save();

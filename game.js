@@ -19,7 +19,10 @@ const gameOverTitle = document.getElementById('gameOverTitle');
 const restartButton = document.getElementById('restartButton');
 canvas.width = MAP.visibleColumns * MAP.tileSize;
 const SIZE = MAP.tileSize; // каарман да, моб да 1 клетка
-let player, mobs, over, lastTime, gameOverDelay, playerSwing, camera;
+let player, mobs, over, lastTime, gameOverDelay, playerSwing, camera, wave, waveTimer;
+function spawnWave() {
+  mobs = MAP.mobSpawns.map(p => ({ ...makeUnit(cellPosition(p.col, p.row), 30), level: 1, xpAwarded: false }));
+}
 function makeUnit(position, hp) {
   return { ...position, size: SIZE, maxHp: hp, hp, cooldown: 0, flash: 0, displayHp: hp, hitBase: hp, hitSum: 0, hitTimer: 0 };
 }
@@ -27,7 +30,9 @@ function reset() {
   mouseFollowing = false; mousePosition = null;
   player = makeUnit(cellPosition(MAP.playerSpawn.col, MAP.playerSpawn.row), 100);
   initPlayerAnimation(player);
-  mobs = MAP.mobSpawns.map(p => makeUnit(cellPosition(p.col, p.row), 30));
+  initProgression(player);
+  wave = 1; waveTimer = 0;
+  spawnWave();
   camera = { x: 0, y: 0, width: canvas.width, height: canvas.height };
   over = false; gameOverDelay = 0; playerSwing = 0;
   gameOverWindow.hidden = true; keys.clear(); lastTime = performance.now();
@@ -37,11 +42,17 @@ function attack() {
   if (over || gameOverDelay > 0 || player.cooldown > 0) return;
   const target = mobs.find(m => m.hp > 0 && distance(player, m) <= MAP.tileSize * 1.55);
   if (!target) return;
-  dealDamage(target, playerAttackDamage());
-  player.cooldown = playerAttackCooldown(); playerSwing = 0.18;
-  if (mobs.every(m => m.hp <= 0)) gameOverDelay = 1.3;
+  const killed = dealDamage(target, playerAttackDamage(player));
+  if (killed) awardExperience(player, target);
+  player.cooldown = playerAttackCooldown(player); playerSwing = 0.18;
+  if (mobs.every(m => m.hp <= 0)) waveTimer = 2;
 }
 function update(dt) {
+  if (!over && gameOverDelay <= 0) updateRegeneration(player, dt);
+  if (!over && gameOverDelay <= 0 && waveTimer > 0) {
+    waveTimer = Math.max(0, waveTimer - dt);
+    if (waveTimer === 0) { wave++; spawnWave(); }
+  }
   updateHp(player, dt); for (const mob of mobs) updateHp(mob, dt);
   playerSwing = Math.max(0, playerSwing - dt);
   player.flash = Math.max(0, player.flash - dt);
@@ -99,10 +110,19 @@ function draw() {
     ctx.strokeRect(player.x-4, player.y-4, SIZE+8, SIZE+8);
   }
   ctx.restore();
-  ctx.fillStyle = '#17202ae8'; ctx.fillRect(9, 8, 430, 48);
+  ctx.fillStyle = '#17202ae8'; ctx.fillRect(9, 8, canvas.width - 18, 124);
   ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.font = '15px Arial';
-  ctx.fillText('Карта: 50×50  |  П: 3 клетка/с  |  М: 2 клетка/с', 18, 28);
-  ctx.fillText('Мобдор: ' + mobs.filter(m => m.hp > 0).length + '  |  HP: ' + player.hp + '/100', 18, 47);
+  const xpStart = totalXpForLevel(player.level);
+  const xpNext = totalXpForLevel(player.level + 1);
+  ctx.fillText('Level ' + player.level + '  |  EXP ' + (player.xp-xpStart) + '/' + (xpNext-xpStart) + '  |  Толкун ' + wave, 18, 28);
+  ctx.fillText('HP: ' + Math.ceil(player.hp) + '/' + player.maxHp + '  |  Mana: ' + Math.floor(player.mana) + '/' + player.maxMana + '  |  Мобдор: ' + mobs.filter(m => m.hp > 0).length, 18, 47);
+  ctx.fillText('STR ' + player.strength + '  AGI ' + player.agility + '  INT ' + player.intelligence + '  |  Упай: ' + player.skillPoints, 18, 66);
+  ctx.fillText('Damage ' + playerAttackDamage(player) + '  Armor ' + player.armor.toFixed(1) + '  |  Чабуул/сек ' + (1/playerAttackCooldown(player)).toFixed(2), 18, 85);
+  ctx.fillStyle = '#405063'; ctx.fillRect(18, 96, canvas.width-36, 7);
+  ctx.fillStyle = '#ac78ff'; ctx.fillRect(18, 96, (canvas.width-36)*(player.xp-xpStart)/(xpNext-xpStart), 7);
+  ctx.fillStyle = '#ffe083';
+  if (player.levelFlash > 0) ctx.fillText('LEVEL UP! +75 HP, +3 Damage, +1 упай', 18, 121);
+  else if (waveTimer > 0) ctx.fillText('Кийинки толкун: ' + Math.ceil(waveTimer) + ' сек', 18, 121);
 }
 function frame(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.05);
