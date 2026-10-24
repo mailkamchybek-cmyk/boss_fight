@@ -25,6 +25,7 @@ function animatePlayer(unit, keys, dt) {
   unit.walkTime += dt;
 }
 function drawPlayerSprite(ctx, unit) {
+  if (drawKomuz(ctx, unit)) return true;
   if (!playerSpriteImage.complete || !playerSpriteImage.naturalWidth) return false;
   const frame = unit.isWalking
     ? Math.floor(unit.walkTime * PLAYER_SPRITE.walkFramesPerSecond) % PLAYER_SPRITE.framesPerDirection

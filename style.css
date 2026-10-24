@@ -85,3 +85,9 @@ main>h1,main>p { display:none; }
 .dog-skill b { position:absolute;left:2px;bottom:1px;min-width:19px;padding:1px 3px;border:1px solid #d7b85e;border-radius:3px;background:#131a16;color:#ffe49a;font-size:12px; }
 .dog-skill:hover { border-color:#fff0a5;filter:brightness(1.15); }.dog-skill:focus-visible { outline:2px solid #ffe49a;outline-offset:-3px; }.dog-skill:disabled { cursor:default;filter:grayscale(.7) brightness(.65); }
 @media(max-width:650px) { .hud-skills { display:flex;position:absolute;right:12px;bottom:170px;width:66px;height:70px;padding:3px;z-index:4; }.hud-skills h3,.hud-skills .hud-points,.hud-skills .hud-slot:not(.dog-skill) {display:none;}.hud-skills .hud-skill-grid {display:flex;}.hud-skills .dog-skill {width:100%;height:100%;} }
+
+.komuz-skill { position:relative;padding:0;overflow:hidden;border-color:#d7b85e;background:#eee4ca;cursor:pointer; }
+.komuz-skill-icon { position:absolute;inset:0;background-image:url('komuz-sprite.png');background-size:1400% 100%;background-position:61.54% 50%;background-repeat:no-repeat; }
+.komuz-skill b { position:absolute;left:2px;bottom:1px;min-width:19px;padding:1px 3px;border:1px solid #d7b85e;border-radius:3px;background:#131a16;color:#ffe49a;font-size:12px; }
+.komuz-skill:hover {border-color:#fff0a5;filter:brightness(1.1);}.komuz-skill:focus-visible {outline:2px solid #ffe49a;outline-offset:-3px;}.komuz-skill:disabled {cursor:default;filter:brightness(.7);}
+@media(max-width:650px) { .hud-skills {width:128px;}.hud-skills .hud-slot.komuz-skill {display:block;width:50%;height:100%;}.hud-skills .dog-skill {width:50%;}.hud-skills .hud-skill-grid {gap:4px;} }

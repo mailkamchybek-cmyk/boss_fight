@@ -28,6 +28,7 @@ function makeUnit(position, hp) {
 }
 function reset() {
   resetDogs();
+  resetKomuz();
   if (typeof closeShop === 'function') closeShop();
   mouseFollowing = false; mousePosition = null;
   player = makeUnit(cellPosition(MAP.playerSpawn.col, MAP.playerSpawn.row), 100);
@@ -69,12 +70,15 @@ function update(dt) {
     }
   }
   if (over || gameOverDelay > 0) return;
+  updateKomuz(dt);
   player.cooldown = Math.max(0, player.cooldown - dt);
-  if (mouseFollowing) setMouseTarget();
-  movePlayer(player, keys, dt);
-  animatePlayer(player, keys, dt);
+  if (!isPlayingKomuz()) {
+    if (mouseFollowing) setMouseTarget();
+    movePlayer(player, keys, dt);
+    animatePlayer(player, keys, dt);
+  }
   updateDogs(dt);
-  attack(); // Жакын келген мобго автоматтык чабуул.
+  if (!isPlayingKomuz()) attack(); // Комуз учурунда автоатака токтойт.
   for (const mob of mobs) {
     if (mob.hp <= 0) continue;
     mob.cooldown = Math.max(0, mob.cooldown - dt);
@@ -124,6 +128,7 @@ function frame(now) {
 window.addEventListener('keydown', e => {
   if (document.getElementById('shopDialog').open) return;
   const key = e.key.toLowerCase();
+  if (e.code === 'KeyW' || key === 'w') { e.preventDefault(); if (!e.repeat) castKomuz(); return; }
   if ((e.code === 'KeyQ' || key === 'q') && !e.repeat) { e.preventDefault(); castDog(); }
   if ([' ', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) e.preventDefault();
   keys.add(key); if (key === 'r') reset();
@@ -131,7 +136,7 @@ window.addEventListener('keydown', e => {
 window.addEventListener('keyup', e => keys.delete(e.key.toLowerCase()));
 canvas.addEventListener('contextmenu', e => e.preventDefault());
 canvas.addEventListener('pointerdown', e => {
-  if (e.button !== 2 || over || gameOverDelay > 0) return;
+  if (e.button !== 2 || over || gameOverDelay > 0 || isPlayingKomuz()) return;
   e.preventDefault(); mouseFollowing = true;
   mousePosition = { x: e.clientX, y: e.clientY };
   canvas.setPointerCapture(e.pointerId); setMouseTarget();

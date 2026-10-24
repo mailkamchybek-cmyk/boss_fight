@@ -8,7 +8,7 @@ let runningDogs = [];
 let dogCooldown = 0;
 function resetDogs() { runningDogs = []; dogCooldown = 0; }
 function castDog() {
-  if (over || gameOverDelay > 0 || player.hp <= 0 || dogCooldown > 0 || document.getElementById('shopDialog').open) return;
+  if (isPlayingKomuz() || over || gameOverDelay > 0 || player.hp <= 0 || dogCooldown > 0 || document.getElementById('shopDialog').open) return;
   const directions = [{x:0,y:1},{x:-1,y:0},{x:1,y:0},{x:0,y:-1}];
   const direction = directions[player.direction] || directions[0];
   runningDogs.push({
@@ -55,7 +55,7 @@ function updateDogButton() {
   const button = document.getElementById('dogSkillButton');
   const label = document.getElementById('dogCooldown');
   if (!button) return;
-  button.disabled = dogCooldown > 0 || player.hp <= 0 || over || gameOverDelay > 0;
+  button.disabled = isPlayingKomuz() || dogCooldown > 0 || player.hp <= 0 || over || gameOverDelay > 0;
   label.textContent = dogCooldown > 0 ? dogCooldown.toFixed(1) : 'Q';
 }
 document.getElementById('dogSkillButton').addEventListener('click', castDog);

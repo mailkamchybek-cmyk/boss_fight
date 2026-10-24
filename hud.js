@@ -2,6 +2,7 @@
 const hud = Object.fromEntries(['heroName','heroHp','heroMana','hpFill','manaFill','xpFill','xpText','heroDamage','heroArmor','heroStrength','heroAgility','heroIntelligence','heroSpeed','heroPoints','heroStatus','minimap','heroPortrait'].map(id => [id, document.getElementById(id)]));
 function updateHud() {
   updateDogButton();
+  updateKomuzButton();
   if (!hud.heroName || !player) return;
   const start = totalXpForLevel(player.level), next = totalXpForLevel(player.level + 1);
   hud.heroName.textContent = 'Каарман · Level ' + player.level;
@@ -18,7 +19,7 @@ function updateHud() {
   hud.heroIntelligence.textContent = player.intelligence;
   hud.heroSpeed.textContent = (1/playerAttackCooldown(player)).toFixed(2) + '/сек';
   hud.heroPoints.textContent = player.skillPoints;
-  hud.heroStatus.textContent = player.hp <= 0 ? 'Жеңилүү' : player.levelFlash > 0 ? 'LEVEL UP!' : waveTimer > 0 ? 'Толкун ' + (wave+1) + ': ' + Math.ceil(waveTimer) + ' сек' : 'Толкун ' + wave + ' · Мобдор ' + mobs.filter(m=>m.hp>0).length;
+  hud.heroStatus.textContent = player.hp <= 0 ? 'Жеңилүү' : isPlayingKomuz() ? 'Комуз · ' + komuzRemaining.toFixed(1) + ' сек' : player.levelFlash > 0 ? 'LEVEL UP!' : waveTimer > 0 ? 'Толкун ' + (wave+1) + ': ' + Math.ceil(waveTimer) + ' сек' : 'Толкун ' + wave + ' · Мобдор ' + mobs.filter(m=>m.hp>0).length;
   const mini = hud.minimap.getContext('2d'), w = hud.minimap.width, h = hud.minimap.height;
   mini.fillStyle = '#18271c'; mini.fillRect(0,0,w,h);
   mini.strokeStyle = '#2c4232'; mini.lineWidth = 1;

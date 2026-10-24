@@ -4,7 +4,7 @@ const PLAYER_SETTINGS = {
 };
 function movePlayer(unit, pressedKeys, deltaTime) {
   let x = Number(pressedKeys.has('d') || pressedKeys.has('arrowright')) - Number(pressedKeys.has('a') || pressedKeys.has('arrowleft'));
-  let y = Number(pressedKeys.has('s') || pressedKeys.has('arrowdown')) - Number(pressedKeys.has('w') || pressedKeys.has('arrowup'));
+  let y = Number(pressedKeys.has('s') || pressedKeys.has('arrowdown')) - Number(pressedKeys.has('arrowup'));
   if (x || y) unit.moveTarget = null;
   let maxStep = Infinity;
   if (!x && !y && unit.moveTarget) {
