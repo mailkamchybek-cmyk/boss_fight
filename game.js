@@ -27,6 +27,7 @@ function makeUnit(position, hp) {
   return { ...position, size: SIZE, maxHp: hp, hp, cooldown: 0, flash: 0, displayHp: hp, hitBase: hp, hitSum: 0, hitTimer: 0 };
 }
 function reset() {
+  if (typeof closeShop === 'function') closeShop();
   mouseFollowing = false; mousePosition = null;
   player = makeUnit(cellPosition(MAP.playerSpawn.col, MAP.playerSpawn.row), 100);
   initPlayerAnimation(player);
@@ -48,6 +49,7 @@ function attack() {
   if (mobs.every(m => m.hp <= 0)) waveTimer = 2;
 }
 function update(dt) {
+  if (document.getElementById('shopDialog').open) return;
   if (!over && gameOverDelay <= 0) updateRegeneration(player, dt);
   if (!over && gameOverDelay <= 0 && waveTimer > 0) {
     waveTimer = Math.max(0, waveTimer - dt);
@@ -129,6 +131,7 @@ function frame(now) {
   lastTime = now; update(dt); draw(); requestAnimationFrame(frame);
 }
 window.addEventListener('keydown', e => {
+  if (document.getElementById('shopDialog').open) return;
   const key = e.key.toLowerCase();
   if ([' ', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) e.preventDefault();
   keys.add(key); if (key === 'r') reset();

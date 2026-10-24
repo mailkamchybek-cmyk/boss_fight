@@ -10,6 +10,18 @@
   <main>
     <h1>Boss Fight</h1>
     <p>Сүрөттөгү пиксел каарман — персонаж (100 HP, 30 урон). Кызыл квадрат — моб (30 HP, 10 урон). Карта 50×50 клетка. Персонаж ылдыйкы оң жакта, 4 моб жогоруда пайда болот. Ар бир моб 25 EXP берет; баары өлгөндө жаңы толкун чыгат. Level көтөрүлгөндө атрибуттар өсөт.</p>
+    <div class="game-toolbar">
+      <button id="shopButton" class="shop-button" type="button" aria-label="Дүкөндү ачуу (1)" aria-haspopup="dialog" aria-controls="shopDialog" aria-expanded="false" title="Дүкөн (1)">
+        <img src="shop-icon.png" alt="" width="64" height="64" />
+        <span class="shop-hotkey" aria-hidden="true">1</span>
+      </button>
+      <span class="shop-label">Дүкөн</span>
+    </div>
+    <dialog id="shopDialog" class="shop-dialog" aria-labelledby="shopTitle" aria-describedby="shopDescription">
+      <div class="shop-heading"><h2 id="shopTitle">Дүкөн</h2><button id="shopClose" type="button" aria-label="Дүкөндү жабуу">×</button></div>
+      <p id="shopDescription">Буюмдар жакында кошулат.</p>
+      <p class="shop-hint">Жабуу: <kbd>1</kbd> же <kbd>Esc</kbd></p>
+    </dialog>
     <div class="game-box">
       <canvas id="game" width="600" height="500"></canvas>
       <div id="gameOverWindow" class="game-over-window" hidden>
@@ -19,7 +31,7 @@
         </div>
       </div>
     </div>
-    <p><strong>Чычкандын оң баскычы</strong> — барчу жерди тандоо (кармап жылдырсаңыз — ээрчүү) · <strong>WASD / жебелер</strong> — басуу · <strong>Автоатака</strong> — жакын турган мобду өзү урат · <strong>R</strong> — кайра баштоо</p>
+    <p><strong>Чычкандын оң баскычы</strong> — барчу жерди тандоо (кармап жылдырсаңыз — ээрчүү) · <strong>WASD / жебелер</strong> — басуу · <strong>Автоатака</strong> — жакын турган мобду өзү урат · <strong>1</strong> — дүкөн · <strong>R</strong> — кайра баштоо</p>
   </main>
   <script src="map.js"></script>
   <script src="hp.js"></script>
@@ -30,5 +42,6 @@
   <script src="sprite.js"></script>
   <script src="progression.js"></script>
   <script src="game.js"></script>
+  <script src="shop.js"></script>
 </body>
 </html>
