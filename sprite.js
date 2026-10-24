@@ -2,8 +2,7 @@
 // Sprite: 3 кадр × 4 багыт (ылдый, сол, оң, өйдө).
 const PLAYER_SPRITE = {
   src: 'player_sprite.png',
-  frameWidth: 64,
-  frameHeight: 64,
+  directions: 4,
   framesPerDirection: 3,
   walkFramesPerSecond: 8, // Жүрүш анимациясынын ылдамдыгы
 };
@@ -33,12 +32,19 @@ function drawPlayerSprite(ctx, unit) {
   const frame = unit.isWalking
     ? Math.floor(unit.walkTime * PLAYER_SPRITE.walkFramesPerSecond) % PLAYER_SPRITE.framesPerDirection
     : 1;
+  // Сүрөт 3 мамыча жана 4 катардан турат; кадрды чыныгы өлчөмүнөн эсептейбиз.
+  const frameWidth = playerSpriteImage.naturalWidth / PLAYER_SPRITE.framesPerDirection;
+  const frameHeight = playerSpriteImage.naturalHeight / PLAYER_SPRITE.directions;
+  const scale = unit.size / Math.max(frameWidth, frameHeight);
+  const width = frameWidth * scale;
+  const height = frameHeight * scale;
+  const smoothing = ctx.imageSmoothingEnabled;
   ctx.imageSmoothingEnabled = false;
   ctx.drawImage(playerSpriteImage,
-    frame * PLAYER_SPRITE.frameWidth,
-    unit.direction * PLAYER_SPRITE.frameHeight,
-    PLAYER_SPRITE.frameWidth, PLAYER_SPRITE.frameHeight,
-    unit.x, unit.y, unit.size, unit.size);
-  ctx.imageSmoothingEnabled = true;
+    frame * frameWidth,
+    unit.direction * frameHeight,
+    frameWidth, frameHeight,
+    unit.x + (unit.size - width) / 2, unit.y + unit.size - height, width, height);
+  ctx.imageSmoothingEnabled = smoothing;
   return true;
 }
