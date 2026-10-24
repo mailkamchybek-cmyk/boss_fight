@@ -112,19 +112,7 @@ function draw() {
     ctx.strokeRect(player.x-4, player.y-4, SIZE+8, SIZE+8);
   }
   ctx.restore();
-  ctx.fillStyle = '#17202ae8'; ctx.fillRect(9, 8, canvas.width - 18, 124);
-  ctx.fillStyle = '#fff'; ctx.textAlign = 'left'; ctx.font = '15px Arial';
-  const xpStart = totalXpForLevel(player.level);
-  const xpNext = totalXpForLevel(player.level + 1);
-  ctx.fillText('Level ' + player.level + '  |  EXP ' + (player.xp-xpStart) + '/' + (xpNext-xpStart) + '  |  Толкун ' + wave, 18, 28);
-  ctx.fillText('HP: ' + Math.ceil(player.hp) + '/' + player.maxHp + '  |  Mana: ' + Math.floor(player.mana) + '/' + player.maxMana + '  |  Мобдор: ' + mobs.filter(m => m.hp > 0).length, 18, 47);
-  ctx.fillText('STR ' + player.strength + '  AGI ' + player.agility + '  INT ' + player.intelligence + '  |  Упай: ' + player.skillPoints, 18, 66);
-  ctx.fillText('Damage ' + playerAttackDamage(player) + '  Armor ' + player.armor.toFixed(1) + '  |  Чабуул/сек ' + (1/playerAttackCooldown(player)).toFixed(2), 18, 85);
-  ctx.fillStyle = '#405063'; ctx.fillRect(18, 96, canvas.width-36, 7);
-  ctx.fillStyle = '#ac78ff'; ctx.fillRect(18, 96, (canvas.width-36)*(player.xp-xpStart)/(xpNext-xpStart), 7);
-  ctx.fillStyle = '#ffe083';
-  if (player.levelFlash > 0) ctx.fillText('LEVEL UP! +75 HP, +3 Damage, +1 упай', 18, 121);
-  else if (waveTimer > 0) ctx.fillText('Кийинки толкун: ' + Math.ceil(waveTimer) + ' сек', 18, 121);
+  if (typeof updateHud === 'function') updateHud();
 }
 function frame(now) {
   const dt = Math.min((now - lastTime) / 1000, 0.05);

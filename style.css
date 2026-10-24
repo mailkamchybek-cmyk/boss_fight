@@ -26,3 +26,31 @@ canvas { display: block; width: 100%; height: auto; background: #edf4e8; border:
 .shop-heading h2 { margin:0; }
 #shopClose { border:1px solid #cda44b; border-radius:6px; width:36px; height:36px; background:#332817; color:#ffe493; font-size:26px; cursor:pointer; }
 .shop-hint { margin-bottom:0; color:#c4b89f; font-size:13px; }
+
+/* Кара таш жана алтын рамкадагы төмөнкү панель. */
+.hero-hud { display:grid; grid-template-columns:1.15fr .75fr 1.7fr .85fr 1fr; gap:5px; padding:10px 6px 6px; border:5px ridge #66665c; border-top-width:9px; border-radius:0 0 8px 8px; background:repeating-linear-gradient(12deg,#282a28 0 8px,#343632 9px 13px,#20221f 14px 20px); box-shadow:inset 0 0 0 2px #151612,0 8px 20px #0005; color:#e8dfc7; text-align:left; }
+.hud-frame { min-width:0; background:linear-gradient(135deg,#121810,#030504); border:2px ridge #b9a45e; padding:5px; box-shadow:inset 0 0 12px #000; }
+.hero-hud canvas { border:0; border-radius:0; background:transparent; height:auto; }
+.hud-map { position:relative; display:flex; align-items:center; }
+.hud-map canvas { width:100%; aspect-ratio:1; }
+.hud-caption { position:absolute; bottom:4px; left:0; right:0; text-align:center; font-size:8px; color:#c6c9b5; letter-spacing:2px; pointer-events:none; }
+.hud-portrait { padding:3px; display:flex; flex-direction:column; justify-content:flex-end; }
+.hud-portrait canvas { width:100%; max-height:110px; object-fit:contain; }
+.hud-bar,.hud-xp { position:relative; overflow:hidden; background:#0c1216; border:1px solid #8b7138; height:17px; text-align:center; }
+.hud-bar>span,.hud-xp>span { display:block; height:100%; width:0; }
+.hud-bar b,.hud-xp b { position:absolute; inset:0; font-size:10px; line-height:15px; color:#fff; text-shadow:1px 1px 2px #000; white-space:nowrap; }
+.hp-bar>span { background:linear-gradient(#56b738,#1f6e20); }.mana-bar>span { background:linear-gradient(#398cdb,#154196); }
+.hud-stats h2 { font-size:13px; text-align:center; margin:0 0 5px; color:#f3e3ad; }
+.hud-xp { height:13px; }.hud-xp>span { background:linear-gradient(#7357bf,#423075); }.hud-xp b { font-size:9px;line-height:11px; }
+.hud-stat-columns { display:grid; grid-template-columns:1fr 1fr; gap:6px; padding-top:4px; }
+.hud-stat-columns p { margin:3px 0; font-size:10px; color:#d7bd65; line-height:1.2; }
+.hud-stat-columns b { display:block; color:#f4f0df; font-size:12px; }
+.hud-stat-columns .str { color:#f26b57; }.hud-stat-columns .agi { color:#74d55f; }.hud-stat-columns .int { color:#53a9ee; }
+.hud-status { font-size:9px; color:#e7cd7d; margin-top:5px; min-height:12px; }
+.hero-hud h3 { margin:0 0 5px; text-align:center; font-size:11px; color:#e5c95f; }
+.hud-item-grid,.hud-skill-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:4px; }
+.hud-skills .hud-skill-grid { grid-template-columns:repeat(3,1fr); }
+.hud-slot { display:grid;place-items:center;aspect-ratio:1;min-width:0;border:2px ridge #666858;background:radial-gradient(ellipse,#192020,#050807);color:#404840; font-size:15px; }
+.hud-points { font-size:10px;color:#d7bd65;text-align:center;margin-top:7px; }
+#game { border-bottom-left-radius:0;border-bottom-right-radius:0; }
+@media(max-width:620px) { .hero-hud { grid-template-columns:1fr .75fr 1.6fr; }.hud-items,.hud-skills { grid-column:span 1; }.hud-items { grid-column:span 2; }.hud-item-grid { grid-template-columns:repeat(6,1fr); }.hud-skill-grid { grid-template-columns:repeat(3,1fr); }.hud-stats h2 { font-size:11px; } }
